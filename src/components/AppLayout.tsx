@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { LayoutDashboard, Users, FileText, MessageSquare, LogOut, Upload } from "lucide-react";
+import { LayoutDashboard, Users, FileText, MessageSquare, LogOut, Upload, Send } from "lucide-react";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -59,6 +59,15 @@ export default function AppLayout({ children }: AppLayoutProps) {
           >
             <MessageSquare className="w-5 h-5" />
             <span>CV Chat</span>
+          </a>
+          <a
+            href="https://t.me/ai_recruiter_assitant_bot"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 px-4 py-3 text-stone-600 hover:bg-gradient-to-r hover:from-violet-500 hover:to-sky-500 hover:text-white rounded-xl font-medium transition-all"
+          >
+            <Send className="w-5 h-5" />
+            <span>Talk With Gen</span>
           </a>
           <button
             onClick={handleLogout}

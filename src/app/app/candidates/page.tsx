@@ -119,6 +119,7 @@ export default function CandidatesPage() {
               candidates.map((candidate) => (
                 <div
                   key={candidate.id}
+                  onClick={() => router.push(`/app/candidates/${candidate.id}/cvs`)}
                   className="bg-white rounded-2xl shadow-lg border border-stone-200 p-6 hover:shadow-xl transition-all cursor-pointer group"
                 >
                   <div className="flex items-start justify-between mb-4">
