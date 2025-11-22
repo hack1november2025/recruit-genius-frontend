@@ -1,12 +1,19 @@
-# HR AI Recruitment Manager
+# 🚀 Recruit Genius - AI-Powered Recruitment Platform
 
-> AI-powered recruitment platform that streamlines hiring with intelligent job offers, smart CV evaluation, and conversational AI assistance.
+<div align="center">
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Next.js](https://img.shields.io/badge/Next.js-16.0.0-black)
-![React](https://img.shields.io/badge/React-19.2.0-blue)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)
+![Recruit Genius](https://img.shields.io/badge/Recruit_Genius-v1.0.0-8b5cf6?style=for-the-badge)
+![Next.js](https://img.shields.io/badge/Next.js-16.0.0-000000?style=for-the-badge&logo=next.js)
+![React](https://img.shields.io/badge/React-19.2.0-61DAFB?style=for-the-badge&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+
+**Transform your recruitment process with AI-powered CV analysis and intelligent candidate matching**
+
+[Features](#-key-features) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [Architecture](#-architecture) • [API](#-api-integration)
+
+</div>
 
 ## 🚀 Overview
 

@@ -1,0 +1,19 @@
+services:
+  # Frontend Next.js Service
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: recruit-genius-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NODE_ENV=production
+    networks:
+      - recruit-genius-network
+    restart: unless-stopped
+
+networks:
+  recruit-genius-network:
+    driver: bridge
