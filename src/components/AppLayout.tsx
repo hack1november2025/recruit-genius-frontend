@@ -53,22 +53,13 @@ export default function AppLayout({ children }: AppLayoutProps) {
             <Upload className="w-5 h-5" />
             <span>Upload CV</span>
           </button>
-          <a
-            href="#"
-            className="flex items-center gap-3 px-4 py-3 text-stone-600 hover:bg-stone-100 rounded-xl font-medium transition-colors"
+          <button
+            onClick={() => router.push("/app/cv-chat")}
+            className="flex items-center gap-3 px-4 py-3 text-stone-600 hover:bg-stone-100 rounded-xl font-medium transition-colors w-full text-left"
           >
             <MessageSquare className="w-5 h-5" />
             <span>CV Chat</span>
-          </a>
-          <a
-            href="https://t.me/ai_recruiter_assitant_bot"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3 px-4 py-3 text-stone-600 hover:bg-gradient-to-r hover:from-violet-500 hover:to-sky-500 hover:text-white rounded-xl font-medium transition-all"
-          >
-            <Send className="w-5 h-5" />
-            <span>Talk With Gen</span>
-          </a>
+          </button>
           <button
             onClick={handleLogout}
             className="flex items-center gap-3 px-4 py-3 text-stone-600 hover:bg-stone-100 rounded-xl font-medium transition-colors w-full text-left"
@@ -80,8 +71,26 @@ export default function AppLayout({ children }: AppLayoutProps) {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="flex-1 relative">
         {children}
+        
+        {/* Floating Telegram Button */}
+        <a
+          href="https://t.me/ai_recruiter_assitant_bot"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-6 right-6 group"
+        >
+          <div className="flex items-center gap-3 bg-gradient-to-r from-violet-500 to-sky-500 text-white px-6 py-4 rounded-full shadow-2xl hover:shadow-violet-500/50 hover:scale-105 transition-all duration-300">
+            <div className="w-10 h-10 flex items-center justify-center">
+              <Send className="w-6 h-6" />
+            </div>
+            <div className="hidden group-hover:block pr-2">
+              <p className="font-semibold text-sm whitespace-nowrap">Talk with Gen</p>
+              <p className="text-xs opacity-90 whitespace-nowrap">AI Recruiter Assistant</p>
+            </div>
+          </div>
+        </a>
       </main>
     </div>
   );

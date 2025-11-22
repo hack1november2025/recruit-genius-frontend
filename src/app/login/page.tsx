@@ -17,7 +17,7 @@ export default function LoginPage() {
     setIsLoading(true);
 
     // Hardcoded credentials check
-    if (username === "user1" && password === "user1") {
+    if (username === "recruiter" && password === "recruiter") {
       // Simulate loading
       setTimeout(() => {
         router.push("/app");
@@ -118,7 +118,7 @@ export default function LoginPage() {
             {/* Demo Credentials */}
             <div className="mt-4 p-4 bg-sky-50 border border-sky-200 rounded-xl">
               <p className="text-xs text-sky-700 text-center">
-                <strong>Demo Credentials:</strong> user1 / user1
+                <strong>Demo Credentials:</strong> recruiter / recruiter
               </p>
             </div>
           </form>
