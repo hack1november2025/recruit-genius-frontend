@@ -1,25 +1,15 @@
 #!/bin/bash
 set -e
 
-echo "🔄 Waiting for database to be ready..."
+echo "🚀 Starting Recruit Genius Frontend..."
+echo "======================================"
 
-# Wait for PostgreSQL to be ready
-until pg_isready -h "${DATABASE_HOST:-db}" -p "${DATABASE_PORT:-5432}" -U "${DATABASE_USER:-postgres}"; do
-  echo "⏳ Waiting for PostgreSQL..."
-  sleep 2
-done
+# Check if backend API is available (optional)
+if [ -n "$NEXT_PUBLIC_API_URL" ]; then
+    echo "📡 Backend API configured at: $NEXT_PUBLIC_API_URL"
+fi
 
-echo "✅ Database is ready!"
+echo "✅ Frontend is ready!"
+echo "🌐 Starting Next.js server..."
 
-echo "🔧 Enabling pgvector extension..."
-PGPASSWORD="${DATABASE_PASSWORD:-postgres}" psql -h "${DATABASE_HOST:-db}" -U "${DATABASE_USER:-postgres}" -d "${DATABASE_NAME:-recruitment}" -c "CREATE EXTENSION IF NOT EXISTS vector;"
-
-echo "✅ pgvector extension enabled!"
-
-echo "🔄 Running database migrations..."
-alembic upgrade head
-
-echo "✅ Migrations completed successfully!"
-
-echo "🚀 Starting application..."
 exec "$@"

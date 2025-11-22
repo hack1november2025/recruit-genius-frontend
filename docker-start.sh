@@ -3,8 +3,8 @@
 
 set -e
 
-echo "🚀 HR AI Recruitment Manager - Docker Quick Start"
-echo "=================================================="
+echo "🚀 Recruit Genius Frontend - Docker Quick Start"
+echo "================================================"
 
 # Check if Docker is installed
 if ! command -v docker &> /dev/null; then
@@ -24,28 +24,18 @@ if ! docker compose version &> /dev/null; then
     DOCKER_COMPOSE="docker-compose"
 fi
 
-# Check if .env file exists
-if [ ! -f .env ]; then
-    echo "⚠️  .env file not found. Copying from .env.example..."
-    if [ -f .env.example ]; then
-        cp .env.example .env
-        echo "✅ Created .env file from .env.example"
-        echo ""
-        echo "⚠️  IMPORTANT: Please edit .env and set your OPENAI_API_KEY before continuing!"
-        echo ""
-        read -p "Press Enter after you've updated .env with your API key..."
-    else
-        echo "❌ .env.example not found. Please create .env manually."
-        exit 1
-    fi
-fi
+# Check if .env.local file exists (optional for frontend)
+if [ ! -f .env.local ]; then
+    echo "⚠️  .env.local not found. Creating with default values..."
+    cat > .env.local << EOF
+# Backend API URL
+NEXT_PUBLIC_API_URL=http://localhost:8000
 
-# Check if OPENAI_API_KEY is set
-source .env
-if [ -z "$OPENAI_API_KEY" ] || [ "$OPENAI_API_KEY" = "your-openai-api-key-here" ]; then
-    echo "❌ OPENAI_API_KEY is not set in .env file."
-    echo "Please edit .env and set a valid OpenAI API key."
-    exit 1
+# Environment
+NODE_ENV=production
+EOF
+    echo "✅ Created .env.local with default values"
+    echo "   You can edit it to customize the backend API URL"
 fi
 
 echo ""
@@ -57,40 +47,43 @@ echo "🚀 Starting services..."
 $DOCKER_COMPOSE up -d
 
 echo ""
-echo "⏳ Waiting for services to be healthy..."
-sleep 5
+echo "⏳ Waiting for frontend to be ready..."
+sleep 3
 
-# Wait for app to be healthy
-echo "Checking application health..."
+# Wait for frontend to be ready
+echo "Checking frontend availability..."
 MAX_RETRIES=30
 RETRY_COUNT=0
 while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-    if curl -sf http://localhost:8000/api/v1/health > /dev/null 2>&1; then
-        echo "✅ Application is healthy!"
+    if curl -sf http://localhost:3000 > /dev/null 2>&1; then
+        echo "✅ Frontend is ready!"
         break
     fi
     RETRY_COUNT=$((RETRY_COUNT + 1))
-    echo "⏳ Waiting for application... ($RETRY_COUNT/$MAX_RETRIES)"
+    echo "⏳ Waiting for frontend... ($RETRY_COUNT/$MAX_RETRIES)"
     sleep 2
 done
 
 if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
-    echo "❌ Application failed to start. Check logs with: $DOCKER_COMPOSE logs app"
+    echo "❌ Frontend failed to start. Check logs with: $DOCKER_COMPOSE logs frontend"
     exit 1
 fi
 
 echo ""
-echo "✨ Success! Application is running."
+echo "✨ Success! Frontend is running."
 echo ""
-echo "📍 Endpoints:"
-echo "   - API: http://localhost:8000"
-echo "   - Swagger Docs: http://localhost:8000/docs"
-echo "   - ReDoc: http://localhost:8000/redoc"
+echo "📍 Access Points:"
+echo "   - Frontend: http://localhost:3000"
+echo "   - Landing Page: http://localhost:3000"
+echo "   - Dashboard: http://localhost:3000/app"
 echo ""
 echo "📊 View logs:"
-echo "   $DOCKER_COMPOSE logs -f app"
+echo "   $DOCKER_COMPOSE logs -f frontend"
 echo ""
 echo "🛑 Stop services:"
 echo "   $DOCKER_COMPOSE down"
 echo ""
-echo "=================================================="
+echo "📝 Note: Make sure your backend API is running at the configured URL"
+echo "   (default: http://localhost:8000)"
+echo ""
+echo "================================================"

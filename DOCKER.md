@@ -1,21 +1,18 @@
-# Recruit Genius - Docker Deployment
+# Recruit Genius Frontend - Docker Deployment
 
 ## Quick Start
 
-1. **Copy environment file:**
-   ```bash
-   cp .env.example .env
-   ```
-
-2. **Start the application:**
+1. **Start the application:**
    ```bash
    ./docker-start.sh
    ```
 
-3. **Access the application:**
+2. **Access the application:**
    - Frontend: http://localhost:3000
-   - Backend API: http://localhost:8000
-   - API Docs: http://localhost:8000/docs
+   - Landing Page: http://localhost:3000
+   - Dashboard: http://localhost:3000/app
+
+**Note:** The frontend requires a backend API to be running. Make sure your backend is available at the configured URL (default: http://localhost:8000).
 
 ## Docker Commands
 
@@ -31,14 +28,8 @@ docker-compose down
 
 ### View logs
 ```bash
-# All services
-docker-compose logs -f
-
-# Frontend only
+# Frontend logs
 docker-compose logs -f frontend
-
-# Backend only
-docker-compose logs -f backend
 ```
 
 ### Rebuild services
@@ -56,40 +47,37 @@ docker-compose down -v
 
 The Docker setup includes:
 - **Frontend**: Next.js application (port 3000)
-- **Backend**: FastAPI application (port 8000)
-- **Database**: PostgreSQL (port 5432)
 
-All services communicate via a Docker bridge network.
+The frontend communicates with a separate backend API service (not included in this Docker setup).
 
 ## Environment Variables
 
-Configure in `.env` file:
+Configure in `.env.local` file:
 
 ```env
-# Frontend
+# Backend API URL
 NEXT_PUBLIC_API_URL=http://localhost:8000
 
-# Backend
-DATABASE_URL=postgresql://user:password@db:5432/recruit_genius
-ENVIRONMENT=production
-
-# Database
-POSTGRES_USER=user
-POSTGRES_PASSWORD=password
-POSTGRES_DB=recruit_genius
+# Environment
+NODE_ENV=production
 ```
 
 ## Production Notes
 
 - Frontend runs in standalone mode for optimal performance
-- All services restart automatically unless stopped
-- Volumes persist data between container restarts
+- Service restarts automatically unless stopped
 - Multi-stage Docker build minimizes image size
+- Non-root user (nextjs) for security
 
 ## Troubleshooting
 
 ### Port conflicts
-If ports 3000, 8000, or 5432 are in use, update the port mappings in `docker-compose.yaml`.
+If port 3000 is in use, update the port mapping in `docker-compose.yaml`:
+
+```yaml
+ports:
+  - "3001:3000"  # Change 3001 to your preferred port
+```
 
 ### Build failures
 Clear Docker cache and rebuild:
@@ -99,7 +87,17 @@ docker system prune -a
 ```
 
 ### Connection issues
-Ensure all services are running:
+Ensure the frontend service is running:
 ```bash
 docker-compose ps
+```
+
+### Backend API not accessible
+1. Verify backend is running
+2. Check `NEXT_PUBLIC_API_URL` in `.env.local`
+3. Ensure network connectivity between frontend and backend
+
+### View detailed logs
+```bash
+docker-compose logs -f frontend
 ```
