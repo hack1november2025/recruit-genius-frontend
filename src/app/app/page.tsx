@@ -1,11 +1,46 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Users, FileText, LayoutDashboard, BarChart3, MessageSquare } from "lucide-react";
+import { Users, FileText, LayoutDashboard } from "lucide-react";
 import AppLayout from "@/components/AppLayout";
+import type { Candidate } from "@/types/candidate";
+import type { Job } from "@/types/job";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export default function DashboardPage() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  const [candidatesCount, setCandidatesCount] = useState(0);
+  const [jobsCount, setJobsCount] = useState(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [candidatesResponse, jobsResponse] = await Promise.all([
+          fetch(`${API_BASE_URL}/api/v1/candidates?skip=0&limit=100`),
+          fetch(`${API_BASE_URL}/api/v1/jobs?skip=0&limit=100`),
+        ]);
+
+        if (candidatesResponse.ok) {
+          const candidates: Candidate[] = await candidatesResponse.json();
+          setCandidatesCount(candidates.length);
+        }
+
+        if (jobsResponse.ok) {
+          const jobs: Job[] = await jobsResponse.json();
+          setJobsCount(jobs.length);
+        }
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <AppLayout>
@@ -22,15 +57,24 @@ export default function DashboardPage() {
           </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div className="bg-white/70 backdrop-blur-xl border border-stone-200/80 rounded-2xl p-6 shadow-lg">
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-12 h-12 rounded-xl bg-violet-100 flex items-center justify-center">
                     <Users className="w-6 h-6 text-violet-600" />
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold text-slate-800">0</h3>
-                <p className="text-sm text-stone-600">Total Candidates</p>
+                {isLoading ? (
+                  <>
+                    <div className="h-8 w-16 bg-stone-200 rounded animate-pulse mb-2" />
+                    <div className="h-4 w-32 bg-stone-200 rounded animate-pulse" />
+                  </>
+                ) : (
+                  <>
+                    <h3 className="text-2xl font-bold text-slate-800">{candidatesCount}</h3>
+                    <p className="text-sm text-stone-600">Total Candidates</p>
+                  </>
+                )}
               </div>
 
               <div className="bg-white/70 backdrop-blur-xl border border-stone-200/80 rounded-2xl p-6 shadow-lg">
@@ -39,28 +83,17 @@ export default function DashboardPage() {
                     <FileText className="w-6 h-6 text-sky-600" />
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold text-slate-800">0</h3>
-                <p className="text-sm text-stone-600">Active Job Offers</p>
-              </div>
-
-              <div className="bg-white/70 backdrop-blur-xl border border-stone-200/80 rounded-2xl p-6 shadow-lg">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
-                    <BarChart3 className="w-6 h-6 text-emerald-600" />
-                  </div>
-                </div>
-                <h3 className="text-2xl font-bold text-slate-800">0%</h3>
-                <p className="text-sm text-stone-600">Match Rate</p>
-              </div>
-
-              <div className="bg-white/70 backdrop-blur-xl border border-stone-200/80 rounded-2xl p-6 shadow-lg">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center">
-                    <MessageSquare className="w-6 h-6 text-amber-600" />
-                  </div>
-                </div>
-                <h3 className="text-2xl font-bold text-slate-800">0</h3>
-                <p className="text-sm text-stone-600">Chat Sessions</p>
+                {isLoading ? (
+                  <>
+                    <div className="h-8 w-16 bg-stone-200 rounded animate-pulse mb-2" />
+                    <div className="h-4 w-32 bg-stone-200 rounded animate-pulse" />
+                  </>
+                ) : (
+                  <>
+                    <h3 className="text-2xl font-bold text-slate-800">{jobsCount}</h3>
+                    <p className="text-sm text-stone-600">Active Job Offers</p>
+                  </>
+                )}
               </div>
             </div>
 
@@ -78,7 +111,7 @@ export default function DashboardPage() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <button 
-                    onClick={() => router.push("/app/job-offer")}
+                    onClick={() => router.push("/app/job-offer/new")}
                     className="px-6 py-3 bg-gradient-to-r from-violet-500 to-sky-500 text-white font-semibold rounded-xl shadow-lg hover:scale-105 transition-transform"
                   >
                     Create Job Offer

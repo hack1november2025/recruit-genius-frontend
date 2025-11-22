@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { LayoutDashboard, Users, FileText, BarChart3, MessageSquare, LogOut } from "lucide-react";
+import { LayoutDashboard, Users, FileText, MessageSquare, LogOut, Upload } from "lucide-react";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -32,27 +32,27 @@ export default function AppLayout({ children }: AppLayoutProps) {
             <LayoutDashboard className="w-5 h-5" />
             <span>Dashboard</span>
           </a>
-          <a
-            href="#"
-            className="flex items-center gap-3 px-4 py-3 text-stone-600 hover:bg-stone-100 rounded-xl font-medium transition-colors"
+          <button
+            onClick={() => router.push("/app/candidates")}
+            className="flex items-center gap-3 px-4 py-3 text-stone-600 hover:bg-stone-100 rounded-xl font-medium transition-colors w-full text-left"
           >
             <Users className="w-5 h-5" />
             <span>Candidates</span>
-          </a>
-          <a
-            href="/app/job-offer"
-            className="flex items-center gap-3 px-4 py-3 text-stone-600 hover:bg-stone-100 rounded-xl font-medium transition-colors"
+          </button>
+          <button
+            onClick={() => router.push("/app/job-offer")}
+            className="flex items-center gap-3 px-4 py-3 text-stone-600 hover:bg-stone-100 rounded-xl font-medium transition-colors w-full text-left"
           >
             <FileText className="w-5 h-5" />
             <span>Job Offers</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center gap-3 px-4 py-3 text-stone-600 hover:bg-stone-100 rounded-xl font-medium transition-colors"
+          </button>
+          <button
+            onClick={() => router.push("/app/upload-cv")}
+            className="flex items-center gap-3 px-4 py-3 text-stone-600 hover:bg-stone-100 rounded-xl font-medium transition-colors w-full text-left"
           >
-            <BarChart3 className="w-5 h-5" />
-            <span>Analytics</span>
-          </a>
+            <Upload className="w-5 h-5" />
+            <span>Upload CV</span>
+          </button>
           <a
             href="#"
             className="flex items-center gap-3 px-4 py-3 text-stone-600 hover:bg-stone-100 rounded-xl font-medium transition-colors"
